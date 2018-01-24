@@ -96,9 +96,9 @@ void setup(){
   Serial.println(WiFi.localIP());
   
   bot.begin();
-  pinMode(ledPin, OUTPUT);
+  pinMode(pinLampu, OUTPUT);
   delay(10);
-  digitalWrite(ledPin, HIGH);
+  digitalWrite(pinLampu, HIGH);
 }
 
 void loop() {
