@@ -1,6 +1,7 @@
 #include <ESP8266WiFi.h>
 #include <WiFiClientSecure.h>
 #include <UniversalTelegramBot.h>
+#include <ArduinoJson.h> 
 
 // Initialize Wifi connection to the router
 char ssid[] = "@WIFI.ID";     // your network SSID (name)
@@ -29,34 +30,43 @@ void handleNewMessages(int numNewMessages) {
     String from_name = bot.messages[i].from_name;
     if (from_name == "") from_name = "Guest";
 
-    if (text == "/ledon") {
+//    if (text == "/daftar") { 
+//      //masukin ke database, masi blm tau caranya 
+//    } 
+
+    if (text == "/nyalakan") {
       digitalWrite(ledPin, HIGH);   // turn the LED on (HIGH is the voltage level)
       ledStatus = 1;
-      bot.sendMessage(chat_id, "Led is ON", "");
+      bot.sendMessage(chat_id, "Lampu dinyalakan", "");
     }
 
-    if (text == "/ledoff") {
+    if (text == "/matikan") {
       ledStatus = 0;
       digitalWrite(ledPin, LOW);    // turn the LED off (LOW is the voltage level)
-      bot.sendMessage(chat_id, "Led is OFF", "");
+      bot.sendMessage(chat_id, "Lampu dimatikan", "");
     }
 
     if (text == "/status") {
       if(ledStatus){
-        bot.sendMessage(chat_id, "Led is ON", "");
+        bot.sendMessage(chat_id, "Lampu ruangan menyala", "");
       } else {
-        bot.sendMessage(chat_id, "Led is OFF", "");
+        bot.sendMessage(chat_id, "Lampu ruangan mati", "");
       }
     }
 
-    if (text == "/start") {
-      String welcome = "Welcome to Universal Arduino Telegram Bot library, " + from_name + ".\n";
-      welcome += "This is Flash Led Bot example.\n\n";
-      welcome += "/ledon : to switch the Led ON\n";
-      welcome += "/ledoff : to switch the Led OFF\n";
-      welcome += "/status : Returns current status of LED\n";
-      bot.sendMessage(chat_id, welcome, "Markdown");
+    if (text == "/kontrol") { 
+      String keyboardJson = "[[\"/nyalakan\", \"/matikan\"],[\"/status\"]]"; 
+      bot.sendMessageWithReplyKeyboard(chat_id, "Pilih menu kontrol dibawah ini", "", keyboardJson, true); 
     }
+    
+    if (text == "/start") { 
+      String welcome = "Selamat datang di EasyMeeting Bot, " + from_name + "!\n\n"; 
+      welcome += "Ketik /daftar untuk mendaftar akun, dengan format /daftar <ID Karyawan>\n"; 
+      welcome += "e.g. /daftar 12345\n\n"; 
+      welcome += "Ketik /pilihruang untuk memilih ruang rapat\n"; 
+      welcome += "Ketik /kontrol untuk membuka menu kontrol ruang rapat"; 
+      bot.sendMessage(chat_id, welcome, "Markdown"); 
+    } 
   }
 }
 
