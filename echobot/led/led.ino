@@ -1,7 +1,6 @@
 #include <ESP8266WiFi.h>
 #include <WiFiClientSecure.h>
 #include <UniversalTelegramBot.h>
-#include <ArduinoJson.h> 
 
 // Initialize Wifi connection to the router
 char ssid[] = "@WIFI.ID";     // your network SSID (name)
@@ -78,6 +77,7 @@ void setup()
   // connected
   WiFi.mode(WIFI_STA);
   WiFi.disconnect();
+  
   // attempt to connect to Wifi network:
   Serial.print("Connecting Wifi: ");
   Serial.println(ssid);
@@ -101,11 +101,13 @@ void loop()
 {
   if (millis() > Bot_lasttime + Bot_mtbs)  {
     int numNewMessages = bot.getUpdates(bot.last_message_received + 1);
+    
     while(numNewMessages) {
       Serial.println(digitalRead(ledPin));
       handleNewMessages(numNewMessages);
       numNewMessages = bot.getUpdates(bot.last_message_received + 1);
     }
+    
     Bot_lasttime = millis();
   }
 }
