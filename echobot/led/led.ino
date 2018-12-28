@@ -29,10 +29,6 @@ void handleNewMessages(int numNewMessages) {
     String from_name = bot.messages[i].from_name;
     if (from_name == "") from_name = "Guest";
 
-//    if (text == "/daftar") { 
-//      //masukin ke database, masi blm tau caranya 
-//    } 
-
     if (text == "/nyalakan") {
       digitalWrite(ledPin, HIGH);   // turn the LED on (HIGH is the voltage level)
       ledStatus = 1;
