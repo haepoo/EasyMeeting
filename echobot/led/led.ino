@@ -32,20 +32,22 @@ void handleNewMessages(int numNewMessages) {
     if (text == "/nyalakan") {
       digitalWrite(ledPin, HIGH);   // turn the LED on (HIGH is the voltage level)
       ledStatus = 1;
-      bot.sendMessage(chat_id, "Lampu dinyalakan", "");
+      acStatus = 1;
+      bot.sendMessage(chat_id, "Lampu dinyalakan\nAC dinyalakan, temperature : %d", "");
     }
 
     if (text == "/matikan") {
       ledStatus = 0;
+      acStatus = 0;
       digitalWrite(ledPin, LOW);    // turn the LED off (LOW is the voltage level)
-      bot.sendMessage(chat_id, "Lampu dimatikan", "");
+      bot.sendMessage(chat_id, "Lampu dimatikan\nAC dimatikan", "");
     }
 
     if (text == "/status") {
-      if(ledStatus){
-        bot.sendMessage(chat_id, "Lampu ruangan menyala", "");
+      if(ledStatus && acStatus){
+        bot.sendMessage(chat_id, "Ruang rapat sedang dipakai", "");
       } else {
-        bot.sendMessage(chat_id, "Lampu ruangan mati", "");
+        bot.sendMessage(chat_id, "Ruang rapat tidak dipakai", "");
       }
     }
 
